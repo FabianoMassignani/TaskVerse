@@ -5,7 +5,6 @@ import 'package:taskverse/initialization/initialization.dart';
 import 'package:taskverse/services/Notification.service.dart';
 import 'initialization/module/firebase_options.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 final navigatorKey = GlobalKey<NavigatorState>();
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

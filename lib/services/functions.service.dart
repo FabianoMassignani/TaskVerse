@@ -3,9 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:taskverse/services/database.service.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
-import 'package:intl/intl.dart';
 
 class Functions {
   static tz.TZDateTime parseDateTime(String date, String time) {
