@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taskverse/shared/widgets/widgets.dart';
 import '../shared/widgets/List_Dialog_Box.dart';
-import 'Settings_Scren.dart';
+import 'settings/Settings_Scren.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);

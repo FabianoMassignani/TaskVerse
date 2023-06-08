@@ -1,8 +1,8 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:taskverse/utils/global.dart';
-import 'package:taskverse/presentation/login_widget.dart';
-import 'package:taskverse/presentation/signup_widget.dart';
+import 'package:taskverse/presentation/authentication/login_widget.dart';
+import 'package:taskverse/presentation/authentication/signup_widget.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);

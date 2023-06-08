@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taskverse/presentation/Home_Screen.dart';
+import 'package:taskverse/presentation/List_Screen.dart';
 import 'package:taskverse/controllers/dataController.dart';
 import 'package:taskverse/controllers/authController.dart';
 import 'package:taskverse/services/functions.service.dart';
@@ -163,7 +163,7 @@ class ListViewWidget extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       Routes.route(
-                        HomeScreen(index: index),
+                        ListScreen(index: index),
                         const Offset(1.0, 0.0),
                       ),
                     );

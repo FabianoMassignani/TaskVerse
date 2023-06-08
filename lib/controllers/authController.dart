@@ -7,12 +7,11 @@ import 'package:taskverse/main.dart';
 import 'package:taskverse/models/User.dart';
 import 'package:taskverse/services/notification.service.dart';
 import 'package:taskverse/services/database.service.dart';
-
+import 'package:taskverse/shared/widgets/NotificationSnackBar.dart';
 import '../utils/global.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final Rxn<User> _firebaseUser = Rxn<User>();
 
   User? get user => _firebaseUser.value;
@@ -41,14 +40,14 @@ class AuthController extends GetxController {
           await Database().getUser(authResult.user!.uid);
 
       navigatorKey.currentState!.pop(context);
-    } on FirebaseAuthException catch (e) {
-      final snackBar = SnackBar(
+    } on FirebaseAuthException {
+      NotificationSnackBar.show(
+        context: context,
+        message: 'A senha é inválida ou o usuário não possui senha',
         backgroundColor: secondaryColor,
-        content: Text(e.message!, style: const TextStyle(color: Colors.white)),
       );
 
       navigatorKey.currentState!.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -74,13 +73,13 @@ class AuthController extends GetxController {
 
       navigatorKey.currentState!.pop(context);
     } on FirebaseAuthException catch (e) {
-      final snackBar = SnackBar(
+      NotificationSnackBar.show(
+        context: context,
+        message: e.message!,
         backgroundColor: secondaryColor,
-        content: Text(e.message!, style: const TextStyle(color: Colors.white)),
       );
 
       navigatorKey.currentState!.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -96,21 +95,20 @@ class AuthController extends GetxController {
     try {
       await _auth.sendPasswordResetEmail(email: emailController.text);
 
-      var snackBar = const SnackBar(
+      NotificationSnackBar.show(
+        context: context,
+        message: 'Email de reset de senha enviado.',
         backgroundColor: secondaryColor,
-        content: Text('Password Reset Email Sent',
-            style: TextStyle(color: Colors.white)),
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       Navigator.of(context).popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {
-      final snackBar = SnackBar(
+      NotificationSnackBar.show(
+        context: context,
+        message: e.message!,
         backgroundColor: secondaryColor,
-        content: Text(e.message!, style: const TextStyle(color: Colors.white)),
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       navigatorKey.currentState!.pop(context);
     }
   }
@@ -135,12 +133,13 @@ class AuthController extends GetxController {
       Navigator.pop(context, 'Ok');
       Navigator.of(context).popUntil((route) => route.isFirst);
     } on FirebaseAuthException catch (e) {
-      final snackBar = SnackBar(
+      NotificationSnackBar.show(
+        context: context,
+        message: e.message!,
         backgroundColor: secondaryColor,
-        content: Text(e.message!, style: const TextStyle(color: Colors.white)),
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      navigatorKey.currentState!.pop(context);
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taskverse/shared/widgets/Button_Primary.dart';
 import 'package:taskverse/utils/global.dart';
-import '../controllers/authController.dart';
+import '../../controllers/authController.dart';
 import 'package:get/get.dart';
 
 class SettingsScreen extends StatefulWidget {

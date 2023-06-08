@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:taskverse/presentation/Auth_Screen.dart';
+import 'package:taskverse/presentation/authentication/Auth_Screen.dart';
 import 'package:taskverse/presentation/Main_Screen.dart';
 import 'package:taskverse/controllers/Bindings.dart';
 import 'package:get/get.dart';

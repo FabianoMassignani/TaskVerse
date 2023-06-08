@@ -14,31 +14,44 @@ class NotificationService {
 
   NotificationService._internal();
 
-  static Future initialize(
-      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
-    const androidInitialize =
+  Future<void> initNotification() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('mipmap/ic_launcher');
 
-    const initializationsSettings = InitializationSettings(
-      android: androidInitialize,
-    );
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
 
-    await flutterLocalNotificationsPlugin.initialize(initializationsSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> showNotification(
+  Future<bool> scheduleNotification(
       int id, String? title, String? body, tz.TZDateTime time) async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      time,
-      const NotificationDetails(
-          android: AndroidNotificationDetails(
-              'Scheduled_channel', 'Scheduled Notification',
-              importance: Importance.max, priority: Priority.max)),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+    try {
+      if (time.isAfter(tz.TZDateTime.now(tz.local))) {
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+          id,
+          title,
+          body,
+          time,
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              'Scheduled_channel',
+              'Scheduled Notification',
+              importance: Importance.max,
+              priority: Priority.max,
+            ),
+          ),
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          // ignore: deprecated_member_use
+          androidAllowWhileIdle: true,
+        );
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
   }
 }

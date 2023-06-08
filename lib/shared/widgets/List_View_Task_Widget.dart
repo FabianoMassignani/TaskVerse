@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:taskverse/controllers/dataController.dart';
 import 'package:taskverse/controllers/authController.dart';
-import 'package:taskverse/services/functions.service.dart';
 import 'package:taskverse/services/notification.service.dart';
+import 'package:taskverse/services/functions.service.dart';
 import 'package:taskverse/utils/global.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

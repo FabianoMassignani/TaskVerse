@@ -11,15 +11,15 @@ import 'package:taskverse/utils/routes.dart';
 import 'package:flutter/services.dart';
 import 'package:taskverse/services/notification.service.dart';
 
-class HomeScreen extends StatefulWidget {
+class ListScreen extends StatefulWidget {
   final int? index;
-  const HomeScreen({Key? key, this.index}) : super(key: key);
+  const ListScreen({Key? key, this.index}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ListScreen> createState() => _ListScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ListScreenState extends State<ListScreen> {
   final DataController data = Get.put(DataController());
   final String uid = Get.find<AuthController>().user!.uid;
 

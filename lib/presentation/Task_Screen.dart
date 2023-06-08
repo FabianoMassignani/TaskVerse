@@ -1,18 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:taskverse/controllers/authController.dart';
 import 'package:taskverse/controllers/dataController.dart';
-import 'package:taskverse/models/Task.dart';
-import 'package:taskverse/services/database.service.dart';
 import 'package:taskverse/services/functions.service.dart';
 import 'package:taskverse/shared/widgets/Select_Date_Widget%20copy.dart';
 import 'package:taskverse/shared/widgets/Select_Time_Widget.dart';
-import 'package:taskverse/services/notification.service.dart';
 import 'package:taskverse/utils/global.dart';
 import 'package:taskverse/utils/validators.dart';
 
@@ -183,140 +178,19 @@ class _TodoScreenState extends State<TodoScreen> {
                       splashFactory: NoSplash.splashFactory,
                     ),
                     onPressed: () async {
-                      var lista = data.lists[widget.arrayIndex!];
-
-                      if (widget.taskIndex == null &&
-                          formKey.currentState!.validate()) {
-                        var finalId = UniqueKey().hashCode;
-
-                        lista.task!.add(Task(
-                          title: titleEditingController.text,
-                          details: detailEditingController.text,
-                          id: finalId,
-                          date: _dateController.text,
-                          time: _timeController.text,
-                          dateAndTimeEnabled: (_dateController.text != '' &&
-                                  _timeController.text != '')
-                              ? true
-                              : false,
-                          done: false,
-                          dateCreated: Timestamp.now(),
-                        ));
-
-                        await FirebaseFirestore.instance
-                            .collection("users")
-                            .doc(uid)
-                            .collection("lists")
-                            .doc(lista.id)
-                            .set({
-                          "title": lista.title,
-                          "dateCreated": lista.dateCreated,
-                          "task":
-                              lista.task!.map((task) => task.toJson()).toList()
-                        });
-
-                        Database().addAllTarefa(
-                          uid,
-                          finalId,
-                          lista.title!,
-                          titleEditingController.text,
-                          detailEditingController.text,
-                          Timestamp.now(),
-                          _dateController.text,
-                          _timeController.text,
-                          false,
-                          (_dateController.text != '' &&
-                                  _timeController.text != '')
-                              ? true
-                              : false,
-                          finalId,
-                        );
-
-                        Get.back();
-
-                        HapticFeedback.heavyImpact();
-
-                        if (_dateController.text.isNotEmpty &&
-                            _timeController.text.isNotEmpty) {
-                          NotificationService().showNotification(
-                              finalId,
-                              'Reminder',
-                              titleEditingController.text,
-                              Functions.parseDateTime(
-                                  _dateController.text, _timeController.text));
-                        }
-                      }
-
-                      if (widget.taskIndex != null &&
-                          formKey.currentState!.validate()) {
-                        var editing = data
-                            .lists[widget.arrayIndex!].task![widget.taskIndex!];
-
-                        editing.title = titleEditingController.text;
-                        editing.details = detailEditingController.text;
-                        editing.date = _dateController.text;
-                        editing.time = _timeController.text;
-                        editing.done = done;
-
-                        editing.dateAndTimeEnabled =
-                            (_dateController.text != '' &&
-                                    _timeController.text != '')
-                                ? true
-                                : false;
-
-                        lista.task![widget.taskIndex!] = editing;
-
-                        await FirebaseFirestore.instance
-                            .collection("users")
-                            .doc(uid)
-                            .collection("lists")
-                            .doc(lista.id)
-                            .set({
-                          "title": lista.title,
-                          "dateCreated": lista.dateCreated,
-                          "task":
-                              lista.task!.map((task) => task.toJson()).toList()
-                        });
-
-                        Database().updateTarefa(
-                          uid,
-                          lista.task![widget.taskIndex!].id!,
-                          lista.title!,
-                          titleEditingController.text,
-                          detailEditingController.text,
-                          Timestamp.now(),
-                          _dateController.text,
-                          _timeController.text,
-                          done,
-                          (_dateController.text != '' &&
-                                  _timeController.text != '')
-                              ? true
-                              : false,
-                          lista.task![widget.taskIndex!].id!,
-                        );
-
-                        Get.back();
-
-                        HapticFeedback.heavyImpact();
-
-                        if (_dateController.text.isNotEmpty &&
-                            _timeController.text.isNotEmpty) {
-                          var id = lista.task![widget.taskIndex!].id!;
-                          NotificationService()
-                              .flutterLocalNotificationsPlugin
-                              .cancel(id);
-
-                          var dataHora = Functions.parseDateTime(
-                              _dateController.text, _timeController.text);
-
-                          NotificationService().showNotification(id, 'Reminder',
-                              titleEditingController.text, dataHora);
-                        } else {
-                          NotificationService()
-                              .flutterLocalNotificationsPlugin
-                              .cancel(lista.task![widget.taskIndex!].id!);
-                        }
-                      }
+                      Functions.onSaveButtonPressed(
+                        uid: uid,
+                        formKey: formKey,
+                        titleEditingController: titleEditingController,
+                        detailEditingController: detailEditingController,
+                        dateController: _dateController,
+                        timeController: _timeController,
+                        done: done,
+                        taskIndex: widget.taskIndex,
+                        arrayIndex: widget.arrayIndex!,
+                        data: data,
+                        context: context,
+                      );
                     },
                     child: Text(
                       (widget.taskIndex == null) ? add : update,
@@ -327,13 +201,12 @@ class _TodoScreenState extends State<TodoScreen> {
               )
             ],
           ),
+          //////////////////////////////////////////////////////
           body: SafeArea(
             child: Container(
               width: double.infinity,
-              padding: (MediaQuery.of(context).size.width < 768)
-                  ? const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0)
-                  : const EdgeInsets.symmetric(
-                      horizontal: 35.0, vertical: 15.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
               child: Column(
                 children: [
                   Visibility(
@@ -385,6 +258,7 @@ class _TodoScreenState extends State<TodoScreen> {
                       ),
                     ),
                   ),
+                  //////////////////////////////////////////////////////
                   espaco(10),
                   Container(
                     decoration: BoxDecoration(
@@ -441,7 +315,7 @@ class _TodoScreenState extends State<TodoScreen> {
                         ],
                       ),
                     ),
-                  ),
+                  ), //////////////////////////////////////////////////////
                   espaco(10),
                   GestureDetector(
                     onTap: () async {
