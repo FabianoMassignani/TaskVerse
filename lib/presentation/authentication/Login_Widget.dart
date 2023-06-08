@@ -19,11 +19,9 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   final AuthController authController = Get.find();
 
-  final emailController =
-      TextEditingController(text: "fabiano-smi@hotmail.com");
+  final emailController = TextEditingController(text: "");
 
-  // TextEditingController passwordController = TextEditingController();
-  final passwordController = TextEditingController(text: "fabiano");
+  TextEditingController passwordController = TextEditingController();
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 

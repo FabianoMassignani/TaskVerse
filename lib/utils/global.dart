@@ -162,7 +162,7 @@ InputDecoration nameDecoration = InputDecoration(
         color: Colors.transparent,
       ),
     ),
-    hintText: 'Name',
+    hintText: 'Nome',
     hintStyle: hintTextStyle);
 
 InputDecoration passwordDecoracao(passwordVisible, VoidCallback onPressed) =>
@@ -188,7 +188,7 @@ InputDecoration passwordDecoracao(passwordVisible, VoidCallback onPressed) =>
             color: Colors.transparent,
           ),
         ),
-        hintText: 'password',
+        hintText: 'Senha',
         suffixIcon: IconButton(
             splashColor: Colors.transparent,
             icon:

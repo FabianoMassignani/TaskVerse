@@ -2,22 +2,23 @@ import 'package:form_field_validator/form_field_validator.dart';
 
 class Validator {
   static MultiValidator nameValidator = MultiValidator([
-    RequiredValidator(errorText: "* Required"),
+    RequiredValidator(errorText: "* Campo obrigatório"),
   ]);
 
   static MultiValidator emailValidator = MultiValidator([
-    RequiredValidator(errorText: "* Required"),
-    EmailValidator(errorText: "Enter valid email id"),
+    RequiredValidator(errorText: "* Campo obrigatório"),
+    EmailValidator(errorText: "Digite um email válido"),
   ]);
 
   static MultiValidator passwordValidator = MultiValidator([
     MinLengthValidator(6,
-        errorText: "Password should be greater than 6 characters"),
-    RequiredValidator(errorText: "* Required"),
+        errorText: "A senha deve ter pelo menos 6 caracteres"),
+    RequiredValidator(errorText: "* Campo obrigatório"),
     MaxLengthValidator(15,
-        errorText: "Password should not be greater than 15 characters")
+        errorText: "A senha não pode ter mais de 15 caracteres")
   ]);
 
-  static MultiValidator titleValidator =
-      MultiValidator([RequiredValidator(errorText: "Please enter some text")]);
+  static MultiValidator titleValidator = MultiValidator([
+    RequiredValidator(errorText: "Por favor, insira algum texto"),
+  ]);
 }
