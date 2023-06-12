@@ -27,9 +27,7 @@ class TodoScreen extends StatefulWidget {
 class _TodoScreenState extends State<TodoScreen> {
   final DataController data = Get.find();
   final AuthController authController = Get.find();
-
   final String uid = Get.find<AuthController>().user!.uid;
-
   late TextEditingController _dateController;
   late TextEditingController _timeController;
   late TextEditingController titleEditingController;
@@ -183,10 +181,10 @@ class _TodoScreenState extends State<TodoScreen> {
                       Functions.onSaveButtonPressed(
                         uid: uid,
                         formKey: formKey,
-                        titleEditingController: titleEditingController,
-                        detailEditingController: detailEditingController,
-                        dateController: _dateController,
-                        timeController: _timeController,
+                        title: titleEditingController.text,
+                        detail: detailEditingController.text,
+                        dateController: _dateController.text,
+                        timeController: _timeController.text,
                         done: done,
                         taskIndex: widget.taskIndex,
                         arrayIndex: widget.arrayIndex!,
@@ -243,11 +241,23 @@ class _TodoScreenState extends State<TodoScreen> {
                                 ),
                               ),
                               child: Checkbox(
-                                shape: const CircleBorder(),
-                                checkColor: Colors.white,
-                                activeColor: basicColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: const BorderSide(color: basicColor),
+                                ),
+                                fillColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.selected)) {
+                                      return basicColor;
+                                    } else {
+                                      return basicColor;
+                                    }
+                                  },
+                                ),
+                                checkColor: Colors.black,
                                 value: done,
-                                side: Theme.of(context).checkboxTheme.side,
                                 onChanged: (value) {
                                   setState(() {
                                     done = value!;

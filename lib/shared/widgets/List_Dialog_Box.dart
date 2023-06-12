@@ -128,8 +128,6 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                       editing.title!,
                       widget.docId!,
                     );
-
-                    Get.back();
                   }
                 }, widget.index == null ? create : update, context),
               ),

@@ -2,6 +2,7 @@
 import 'package:taskverse/controllers/dataController.dart';
 import 'package:taskverse/controllers/authController.dart';
 import 'package:taskverse/presentation/Task_Screen.dart';
+
 import 'package:taskverse/services/functions.service.dart';
 import 'package:taskverse/shared/widgets/widgets.dart';
 import 'package:taskverse/utils/global.dart';
@@ -10,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:taskverse/utils/routes.dart';
 import 'package:flutter/services.dart';
 import 'package:taskverse/services/notification.service.dart';
+
+final formKey = GlobalKey<FormState>();
 
 class ListScreen extends StatefulWidget {
   final int? index;
@@ -62,7 +65,9 @@ class _ListScreenState extends State<ListScreen> {
                     )
                   : GetX<DataController>(
                       init: Get.put<DataController>(DataController()),
-                      builder: (DataController data) {
+                      builder: (DataController data1) {
+                        final list = data.lists[widget.index!];
+
                         return ListView.separated(
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) => GestureDetector(
@@ -74,8 +79,7 @@ class _ListScreenState extends State<ListScreen> {
 
                                       NotificationService()
                                           .flutterLocalNotificationsPlugin
-                                          .cancel(data.lists[widget.index!]
-                                              .task![index].id!);
+                                          .cancel(list.task![index].id!);
 
                                       Functions.deleteTodo(
                                           data, uid, widget.index, index);
@@ -88,7 +92,7 @@ class _ListScreenState extends State<ListScreen> {
                                             title:
                                                 const Text('Confirma remover?'),
                                             content: Text(
-                                              'Remover ${data.lists[widget.index!].task![index].title}?',
+                                              'Remover ${list.task![index].title}?',
                                             ),
                                             actions: [
                                               TextButton(
@@ -179,6 +183,38 @@ class _ListScreenState extends State<ListScreen> {
                                                   style: filteredDateStyle,
                                                 ),
                                               ),
+                                            ),
+                                            Checkbox(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                side: const BorderSide(
+                                                    color: basicColor),
+                                              ),
+                                              fillColor: MaterialStateProperty
+                                                  .resolveWith<Color>(
+                                                (Set<MaterialState> states) {
+                                                  if (states.contains(
+                                                      MaterialState.selected)) {
+                                                    return basicColor;
+                                                  } else {
+                                                    return basicColor;
+                                                  }
+                                                },
+                                              ),
+                                              checkColor: Colors.black,
+                                              value: list.task![index].done,
+                                              onChanged: (value) {
+                                                Functions.changeDone(
+                                                  uid: uid,
+                                                  done: value!,
+                                                  id: data.lists[widget.index!]
+                                                      .task![index].id!,
+                                                  data: data,
+                                                  taskIndex: index,
+                                                  arrayIndex: widget.index!,
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),

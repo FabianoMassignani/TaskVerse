@@ -43,13 +43,52 @@ class Functions {
     }
   }
 
+  static Future<void> changeDone({
+    required String uid,
+    required bool done,
+    required int? id,
+    required data,
+    required int? taskIndex,
+    required int arrayIndex,
+  }) async {
+    var lista = data.lists[arrayIndex];
+    var editing = data.lists[arrayIndex].task![taskIndex];
+    editing.done = done;
+    lista.task![taskIndex] = editing;
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection("lists")
+        .doc(lista.id)
+        .set({
+      "title": lista.title,
+      "dateCreated": lista.dateCreated,
+      "task": lista.task!.map((task) => task.toJson()).toList(),
+    });
+
+    Database().updateTarefa(
+      uid,
+      editing.id,
+      lista.title!,
+      title,
+      editing.details,
+      Timestamp.now(),
+      editing.date,
+      editing.time,
+      done,
+      (editing.date != '' && editing.time != '') ? true : false,
+      lista.task![taskIndex].id!,
+    );
+  }
+
   static Future<void> onSaveButtonPressed({
     required String uid,
     required GlobalKey<FormState> formKey,
-    required TextEditingController titleEditingController,
-    required TextEditingController detailEditingController,
-    required TextEditingController dateController,
-    required TextEditingController timeController,
+    required String title,
+    required String detail,
+    required String dateController,
+    required String timeController,
     required bool done,
     required int? taskIndex,
     required int arrayIndex,
@@ -62,15 +101,13 @@ class Functions {
       var finalId = UniqueKey().hashCode;
 
       lista.task!.add(Task(
-        title: titleEditingController.text,
-        details: detailEditingController.text,
+        title: title,
+        details: detail,
         id: finalId,
-        date: dateController.text,
-        time: timeController.text,
+        date: dateController,
+        time: timeController,
         dateAndTimeEnabled:
-            (dateController.text != '' && timeController.text != '')
-                ? true
-                : false,
+            (dateController != '' && timeController != '') ? true : false,
         done: false,
         dateCreated: Timestamp.now(),
       ));
@@ -90,13 +127,13 @@ class Functions {
         uid,
         finalId,
         lista.title!,
-        titleEditingController.text,
-        detailEditingController.text,
+        title,
+        detail,
         Timestamp.now(),
-        dateController.text,
-        timeController.text,
+        dateController,
+        timeController,
         false,
-        (dateController.text != '' && timeController.text != '') ? true : false,
+        (dateController != '' && timeController != '') ? true : false,
         finalId,
       );
 
@@ -104,14 +141,14 @@ class Functions {
 
       HapticFeedback.heavyImpact();
 
-      if (dateController.text.isNotEmpty && timeController.text.isNotEmpty) {
+      if (dateController.isNotEmpty && timeController.isNotEmpty) {
         bool isScheduled = await NotificationService().scheduleNotification(
           finalId,
           'Reminder',
-          titleEditingController.text,
+          title,
           Functions.parseDateTime(
-            dateController.text,
-            timeController.text,
+            dateController,
+            timeController,
           ),
         );
 
@@ -129,16 +166,14 @@ class Functions {
     if (taskIndex != null && formKey.currentState!.validate()) {
       var editing = data.lists[arrayIndex].task![taskIndex];
 
-      editing.title = titleEditingController.text;
-      editing.details = detailEditingController.text;
-      editing.date = dateController.text;
-      editing.time = timeController.text;
+      editing.title = title;
+      editing.details = detail;
+      editing.date = dateController;
+      editing.time = timeController;
       editing.done = done;
 
       editing.dateAndTimeEnabled =
-          (dateController.text != '' && timeController.text != '')
-              ? true
-              : false;
+          (dateController != '' && timeController != '') ? true : false;
 
       lista.task![taskIndex] = editing;
 
@@ -157,13 +192,13 @@ class Functions {
         uid,
         lista.task![taskIndex].id!,
         lista.title!,
-        titleEditingController.text,
-        detailEditingController.text,
+        title,
+        detail,
         Timestamp.now(),
-        dateController.text,
-        timeController.text,
+        dateController,
+        timeController,
         done,
-        (dateController.text != '' && timeController.text != '') ? true : false,
+        (dateController != '' && timeController != '') ? true : false,
         lista.task![taskIndex].id!,
       );
 
@@ -171,17 +206,16 @@ class Functions {
 
       HapticFeedback.heavyImpact();
 
-      if (dateController.text.isNotEmpty && timeController.text.isNotEmpty) {
+      if (dateController.isNotEmpty && timeController.isNotEmpty) {
         var id = lista.task![taskIndex].id!;
         NotificationService().flutterLocalNotificationsPlugin.cancel(id);
 
-        var dataHora =
-            Functions.parseDateTime(dateController.text, timeController.text);
+        var dataHora = Functions.parseDateTime(dateController, timeController);
 
         bool isScheduled = await NotificationService().scheduleNotification(
           id,
           'Reminder',
-          titleEditingController.text,
+          title,
           dataHora,
         );
 
