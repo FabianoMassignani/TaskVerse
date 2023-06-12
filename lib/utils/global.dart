@@ -107,7 +107,7 @@ TextStyle filteredTextStyle = GoogleFonts.notoSans(
 
 TextStyle filteredDateStyle = GoogleFonts.notoSans(
   color: basicColor,
-  fontSize: 10.0,
+  fontSize: 20.0,
 );
 
 TextStyle actionButtonTextStyle =

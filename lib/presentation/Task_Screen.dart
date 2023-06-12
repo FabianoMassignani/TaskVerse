@@ -27,7 +27,9 @@ class TodoScreen extends StatefulWidget {
 class _TodoScreenState extends State<TodoScreen> {
   final DataController data = Get.find();
   final AuthController authController = Get.find();
+
   final String uid = Get.find<AuthController>().user!.uid;
+
   late TextEditingController _dateController;
   late TextEditingController _timeController;
   late TextEditingController titleEditingController;
