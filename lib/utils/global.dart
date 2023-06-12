@@ -107,13 +107,13 @@ TextStyle filteredTextStyle = GoogleFonts.notoSans(
 
 TextStyle filteredDateStyle = GoogleFonts.notoSans(
   color: basicColor,
-  fontSize: 18.0,
+  fontSize: 10.0,
 );
 
 TextStyle actionButtonTextStyle =
     const TextStyle(fontSize: 20.0, color: basicColor);
 
-// Decorations
+// Decorat
 
 InputDecoration emailInputDecoration = InputDecoration(
     contentPadding: const EdgeInsets.all(20.0),

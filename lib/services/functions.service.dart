@@ -16,6 +16,33 @@ class Functions {
     Get.back();
   }
 
+  static String getFormattedDateTime(item) {
+    DateTime dateTime =
+        DateFormat('MM/dd/yyyy hh:mm a').parse('${item.date} ${item.time}');
+    DateTime today = DateTime.now();
+    DateTime tomorrow = DateTime.now().add(const Duration(days: 1));
+
+    if (dateTime.year == today.year &&
+        dateTime.month == today.month &&
+        dateTime.day == today.day) {
+      return 'Hoje ${item.time}';
+    } else if (dateTime.year == tomorrow.year &&
+        dateTime.month == tomorrow.month &&
+        dateTime.day == tomorrow.day) {
+      return 'Amanhã ${item.time}';
+    } else {
+      String formattedDate = DateFormat('MM/dd').format(dateTime);
+      String formattedTime = DateFormat('hh:mm').format(dateTime);
+      String formattedYear = DateFormat('yyyy').format(dateTime);
+
+      if (dateTime.year != today.year) {
+        return '$formattedDate/$formattedYear $formattedTime';
+      } else {
+        return '$formattedDate $formattedTime';
+      }
+    }
+  }
+
   static Future<void> onSaveButtonPressed({
     required String uid,
     required GlobalKey<FormState> formKey,

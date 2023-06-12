@@ -45,10 +45,6 @@ class _ListViewFilteredWidget extends State<ListViewFilteredWidget> {
     return item.date != '' && item.time != '';
   }
 
-  String getFormattedDateTime(item) {
-    return '${item.date}, ${item.time}';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,7 +193,8 @@ class _ListViewFilteredWidget extends State<ListViewFilteredWidget> {
                                       isDateTimeVisible(widget.data[index]),
                                   child: Obx(
                                     () => Text(
-                                      getFormattedDateTime(widget.data[index]),
+                                      Functions.getFormattedDateTime(
+                                          widget.data[index]),
                                       style: filteredDateStyle,
                                     ),
                                   ),

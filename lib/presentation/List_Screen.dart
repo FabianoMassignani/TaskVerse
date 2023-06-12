@@ -27,10 +27,6 @@ class _ListScreenState extends State<ListScreen> {
     return item.date != '' && item.time != '';
   }
 
-  String getFormattedDateTime(item) {
-    return '${item.date}, ${item.time}';
-  }
-
   String getTitleText(item) {
     String? title = item.title;
 
@@ -176,9 +172,10 @@ class _ListScreenState extends State<ListScreen> {
                                                   .task![index]),
                                               child: Obx(
                                                 () => Text(
-                                                  getFormattedDateTime(data
-                                                      .lists[widget.index!]
-                                                      .task![index]),
+                                                  Functions
+                                                      .getFormattedDateTime(data
+                                                          .lists[widget.index!]
+                                                          .task![index]),
                                                   style: filteredDateStyle,
                                                 ),
                                               ),

@@ -30,7 +30,7 @@ class _PasswordState extends State<Password> {
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: backgroundColor,
-        title: const Text(forgotPasswordTtitle),
+        title: Text(forgotPasswordTtitle),
         centerTitle: true,
         leading: Row(
           children: [
